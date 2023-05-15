@@ -48,21 +48,20 @@ app.post('/weather/forecast', (req, res) => {
 
     const api = "https://api.openweathermap.org/data/2.5/forecast?q=" + location + "&appid=" + apiKey;
 
-    https.get(api, function(response) {
-        response.on("data", function(data) {
-            const weatherData = JSON.parse(data);
-            const temperature = weatherData.main.temp;
-            console.log(temperature);
-
-            res.send({
-                current: "Temperature is " + temperature,
-                loc: "Location is " + location
+    https.get(api, function (response) {
+        let weatherData = "";
+        response.on("data", function (data) {
+          weatherData = weatherData + data;
             });
+
+        response.on("end", function () {
+          const parsedWeatherData = JSON.parse(weatherData);
+          console.log(parsedWeatherData);
+          res.send({
+            parsedWeatherData
+          });
         });
-    });
-
-
-
+      });
 });
 
 
