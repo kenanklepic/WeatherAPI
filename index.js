@@ -1,12 +1,21 @@
 const express = require('express');
 const app = express();
 const PORT = 8080;
+const winston = require("winston");
 
 const https = require("https");
 
 const apiKey = "e06601bb8da18db5cf87be1f9498fcf0";
 
 app.use( express.json() )
+
+//Winston logger
+const logger = winston.createLogger({
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ filename: 'C:/Users/Kenan/Desktop/APIHomework/api.log' }),
+    ],
+  });
 
 app.listen(
     PORT,
@@ -29,19 +38,20 @@ app.post('/weather/current', (req, res) => {
         response.on("data", function(data) {
             const weatherData = JSON.parse(data);
             const temperature = weatherData.main.temp;
-            console.log(temperature);
+            logger.info('Temperature is ' + temperature);
 
             res.send({
                 current: "Temperature is " + temperature,
                 loc: "Location is " + location
             });
         });
+        
     });
 
 
 });
 
-
+//POST function for forecast
 app.post('/weather/forecast', (req, res) => {
 
     const {location} = req.body;
@@ -56,7 +66,7 @@ app.post('/weather/forecast', (req, res) => {
 
         response.on("end", function () {
           const parsedWeatherData = JSON.parse(weatherData);
-          console.log(parsedWeatherData);
+          logger.info(parsedWeatherData);
           res.send({
             parsedWeatherData
           });
