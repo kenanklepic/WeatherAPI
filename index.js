@@ -24,7 +24,7 @@ app.listen(
 
 //POST function for current weather
 app.post('/weather/current', (req, res) => {
-
+try{
     const {location} = req.body;
 
     const api = "https://api.openweathermap.org/data/2.5/weather?q=" + location + "&appid=" + apiKey;
@@ -37,22 +37,22 @@ app.post('/weather/current', (req, res) => {
     https.get(api, function(response) {
         response.on("data", function(data) {
             const weatherData = JSON.parse(data);
-            const temperature = weatherData.main.temp;
-            logger.info('Temperature is ' + temperature);
+            logger.info(weatherData);
 
             res.send({
-                current: "Temperature is " + temperature,
-                loc: "Location is " + location
+                weatherData
             });
         });
         
     });
-
-
+} catch (error){
+    return res.status(500).json({ error: "Error" });
+}
 });
 
 //POST function for forecast
 app.post('/weather/forecast', (req, res) => {
+    try{
 
     const {location} = req.body;
 
@@ -72,15 +72,45 @@ app.post('/weather/forecast', (req, res) => {
           });
         });
       });
+    } catch(error){
+        return res.status(500).json({ error: "Error" });
+    }
 });
 
 
 
 //POST function for weather history
-app.post('/weather/history', (req, res) => {
+app.post('/weather/history', async (req, res) => {
+    try{
+        const {location} = req.body;
+        const {sDate} = req.body;
+        const {eDate} = req.body;
+
+        const geoApi = "https://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=" + apiKey;
+
+        const resp = await fetch(geoApi);
+        const data = await resp.json();
+        const latitude = data[0].lat;
+        const longitude = data[0].lon;
+
+        const api = "https://history.openweathermap.org/data/2.5/history/city?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey ;
+
+         https.get(api, function (response) {
+            let weatherData = "";
+              response.on("data", function (data) {
+                 weatherData = weatherData + data;
+                 });
+             response.on("end", function () {
+                const parsedWeatherData = JSON.parse(weatherData);
+                logger.info(parsedWeatherData);
+                res.send({
+                 weatherData
+         });
+        });
+     });
+    } catch(error) {
+        return res.status(500).json({ error: "Error" });
+    }
 
 
 });
-
-
-
