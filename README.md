@@ -74,7 +74,7 @@ Retrieves the weather history for a specific location within a given date range.
  }
  ```
 
-## Prerequisites
+## Logger
 The loggs are located in the api.log file
 
 
