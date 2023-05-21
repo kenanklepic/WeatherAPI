@@ -39,15 +39,7 @@ Retrieves the current weather for a specific location.
  {
    "location": "London"
  }
- ```
 
-- Response:
-- Success (200):
- - Body:
-   - `weatherData` (object): The weather data for the specified location.
-- Error (418):
- - Body:
-   - `message` (string): Error message.
 
 ### POST /weather/forecast
 
@@ -61,15 +53,7 @@ Retrieves the weather forecast for a specific location.
  {
    "location": "London"
  }
- ```
 
-- Response:
-- Success (200):
- - Body:
-   - `parsedWeatherData` (object): The weather forecast data for the specified location.
-- Error (418):
- - Body:
-   - `message` (string): Error message.
 
 ### POST /weather/history
 
@@ -87,15 +71,9 @@ Retrieves the weather history for a specific location within a given date range.
     "sDate": "1684429215",
     "eDate": "1684515615"
  }
- ```
 
-- Response:
-- Success (200):
- - Body:
-   - `parsedWeatherData` (object): The weather history data for the specified location and date range.
-- Error (418):
- - Body:
-   - `message` (string): Error message.
+## Logger
+The loggs are located in the api.log file
 
 
 
