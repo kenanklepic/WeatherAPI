@@ -54,7 +54,7 @@ Retrieves the weather forecast for a specific location.
  {
    "location": "London"
  }
-
+ ```
 
 ### POST /weather/history
 
@@ -72,6 +72,7 @@ Retrieves the weather history for a specific location within a given date range.
     "sDate": "1684429215",
     "eDate": "1684515615"
  }
+ ```
 
 ## Prerequisites
 The loggs are located in the api.log file
