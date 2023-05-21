@@ -93,7 +93,7 @@ app.post('/weather/history', async (req, res) => {
         const latitude = data[0].lat;
         const longitude = data[0].lon;
 
-        const api = "https://history.openweathermap.org/data/2.5/history/city?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey ;
+        const api = "https://history.openweathermap.org/data/2.5/history/city?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey + "&start="  + sDate + "&end=" + eDate;
 
          https.get(api, function (response) {
             let weatherData = "";
